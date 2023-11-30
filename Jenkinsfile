@@ -2,10 +2,19 @@ pipeline {
     agent any
     
     stages {
-        stage('https://github.com/Zuber2002/Docker_jenkins_practice1.git') {
+        stage('build') {
             steps {
+                // Set up a virtual environment
+                sh 'python3 -m venv venv'
                 
-                echo 'Build compilted'
+                // Activate the virtual environment
+                sh 'source venv/bin/activate'
+
+                // Install dependencies (if you have a requirements.txt file)
+                sh 'pip install -r requirements.txt'
+
+                // Run your Python script
+                sh 'app.py'
             }
         }
     }
