@@ -1,20 +1,22 @@
 pipeline {
     agent any
-    
+
     stages {
-        stage('build') {
+        stage('Build Docker Image') {
             steps {
-                // Set up a virtual environment
-                sh 'python3 -m venv venv'
-                
-                // Activate the virtual environment
-                sh 'source venv/bin/activate'
+                script {
+                    dockerImage = docker.build('my-python-app')
+                }
+            }
+        }
 
-                // Install dependencies (if you have a requirements.txt file)
-                sh 'pip install -r requirements.txt'
-
-                // Run your Python script
-                sh 'app.py'
+        stage('Run Docker Container') {
+            steps {
+                script {
+                    dockerImage.inside {
+                        sh 'python app.py'
+                    }
+                }
             }
         }
     }
