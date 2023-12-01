@@ -5,6 +5,7 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 script {
+                    sh sudo yum update -y
                     sh sudo yum install python -y
                     dockerImage = docker.build('my-python-app')
                 }
