@@ -2,22 +2,20 @@ pipeline {
     agent any
 
     stages {
-        stage('Build Docker Image') {
+         stage('Build') {
             steps {
                 script {
-                    sh sudo yum update -y
-                    sh sudo yum install python -y
-                    dockerImage = docker.build('my-python-app')
+                    // Run tests if needed
+                    sh 'docker build -t pythonlinux .'
                 }
             }
         }
 
-        stage('Run Docker Container') {
+        stage('Run') {
             steps {
                 script {
-                    dockerImage.inside {
-                        sh 'python app.py'
-                    }
+                    // Deploy the Docker image as needed
+                    sh 'docker run -i pythonlinux'
                 }
             }
         }
